@@ -1,5 +1,6 @@
 package com.chess.engine.board;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,18 +10,21 @@ public abstract class Tile {
 	
 	final int coordinate;
 	
-	private static final Map<Integer, Empty> EMPTY_TILES = createEmptyTiles();
+	private static final Map<Integer, Empty> EMPTY_TILES_CACHE = createEmptyTiles();
 	private static Map<Integer, Empty> createEmptyTiles(){
 		final Map<Integer, Empty> emptyTileMap = new HashMap<>();
 		for(int i = 0; i < 64; i++) {
 			emptyTileMap.put(i, new Empty(i));
 		}
-		
-		return emptyTileMap;
+		//or 'return emptyTileMap'
+		//but then someone can change the emptyTileMap if there is say a bug
+		return Collections.unmodifiableMap(emptyTileMap);
 	}
 	
-	public Tile createATile(final int tileCoordinate, final Piece piece) {
-		return piece != null ? new Occupied(coordinate, piece) : EMPTY_TILES.get(coordinate);
+	//The only method that will be accessed to create a tile whether it be occupied or empty
+	//Also found this cool way to do if else statements using a 'question mark' operator :)
+	public Tile createTile(final int tileCoordinate, final Piece piece) {
+		return piece != null ? new Occupied(coordinate, piece) : EMPTY_TILES_CACHE.get(coordinate);
 	}
 	
 	private Tile(int coordinate){
@@ -36,7 +40,7 @@ public abstract class Tile {
 	public abstract Piece getPiece();
 	
 	public static final class Empty extends Tile{
-		Empty(final int coordinate){
+		private Empty(final int coordinate){
 			super(coordinate);
 		}
 		
@@ -59,7 +63,7 @@ public abstract class Tile {
 	public static final class Occupied extends Tile{
 		private final Piece thePiece;
 		
-		Occupied(int coordinate, Piece thePiece){
+		private Occupied(int coordinate, final Piece thePiece){
 			super(coordinate);
 			this.thePiece = thePiece;
 		}
