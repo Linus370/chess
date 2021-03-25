@@ -34,8 +34,6 @@ public abstract class Tile {
 	public boolean TileOccupied() {
 		return false;
 	}
-
-	public abstract boolean occupied();
 	
 	public abstract Piece getPiece();
 	
@@ -52,11 +50,6 @@ public abstract class Tile {
 		@Override
 		public Piece getPiece() {
 			return null;
-		}
-		
-		@Override
-		public boolean Occupied(){
-			return false;
 		}
 
 	}
@@ -77,11 +70,6 @@ public abstract class Tile {
 		@Override
 		public Piece getPiece() {
 			return this.thePiece;
-		}
-		
-		@Override
-		public boolean Occupied(){
-			return false;
 		}
 
 	}
