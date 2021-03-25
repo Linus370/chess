@@ -54,10 +54,6 @@ public abstract class Tile {
 			return null;
 		}
 
-		@Override
-		public boolean occupied() {
-			return false;
-		}
 	}
 	
 	public static final class Occupied extends Tile{
@@ -78,9 +74,5 @@ public abstract class Tile {
 			return this.thePiece;
 		}
 
-		@Override
-		public boolean occupied() {
-			return false;
-		}
 	}
 }
